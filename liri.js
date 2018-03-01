@@ -6,7 +6,7 @@ var client = new Twitter(keys.twitterKeys);		//New instance of a twitter client
 
 var request = require("request");				//NPM package for making ajax-like calls
 
-var spotify = require("spotify");				//NPM package for spotify
+var spotify = require("node-spotify-api");				//NPM package for spotify
 
 var userCommand = process.argv[2];
 var artName = process.argv[3];
@@ -20,11 +20,11 @@ function doNext(uC, aN){
 	break;
 
 	case "spotify-this-song":
-		fetchSpotify(aN);
+		fetchSpotify();
 	break;
 
 	case "movie-this":
-		fetchOMDB(aN);
+		fetchOMDB();
 	break;
 
 	case "do-what-it-says":
@@ -139,7 +139,7 @@ function fetchOMDB(movieName){
 
 	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
-	request(requestURL, function (error, response, data){
+	request(queryUrl, function (error, response, data){
 
 		//200 response means that the page has been found and a response was received.
 		if (!error && response.statusCode == 200){
