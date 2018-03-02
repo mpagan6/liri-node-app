@@ -1,8 +1,9 @@
+require("dotenv").config();
 var fs = require("fs");							//NPM package for reading and writing files
 
 var keys = require("./keys.js");				//Twitter keys and access tokens
 var Twitter = require("twitter");				//NPM package for twitter
-var client = new Twitter(keys.twitterKeys);		//New instance of a twitter client
+		//New instance of a twitter client
 
 var request = require("request");				//NPM package for making ajax-like calls
 
@@ -37,25 +38,20 @@ function doNext(uC, aN){
 }
 
 function fetchTwitter(){
-	var tweetsLength;
 
+	var tweetsLength;
+	var client = new Twitter(keys.twitter);
 	//From twitter's NPM documentation, grab the most recent tweets
 	var params = {screen_name: 'marimar20188'};
-	client.get('statuses/user_timeline', function(error, tweets, response) {
-		if(error) throw error;
-
-		//Loop through the number of tweets that were returned to get the number of tweets returned.
+client.get('statuses/user_timeline', params, function(error, tweets, response) {
+  if (!error) {
+    console.log(tweets);
+  }
+  //Loop through the number of tweets that were returned to get the number of tweets returned.
 		//If the number of tweets exceeds 20, make it 20.
 		//Then loop through the length of tweets and return the tweets date and text.
-		tweetsLength = 0;
-
-		for(var i=0; i<tweets.length; i++){
-			tweetsLength ++;
-		}
-		if (tweetsLength > 20){
-			tweetsLength = 20;
-		}
-		for (var i=0; i<tweetsLength; i++){
+		
+		for (var i=0; i<tweets.length; i++){
 			console.log("Tweet " + (i+1) + " created on: " + tweets[i].created_at);
 			console.log("Tweet " + (i+1) + " text: " + tweets[i].text);
 			console.log("--------------------------------------------------------------");
@@ -64,8 +60,10 @@ function fetchTwitter(){
 			appendFile("Tweet " + (i+1) + " text: " + tweets[i].text);
 			appendFile("--------------------------------------------------------------");
 		}
-	});
-}
+});
+
+		
+	};
 
 function upperCase (string){
 	//Capitalize first letter of each part of song name
